@@ -29,3 +29,22 @@ def test_berlin(driver):
     button_sub.click()
     sleep(2)
     assert "https://the-internet.herokuapp.com/secure" in driver.current_url
+
+    text_info = driver.find_element(By.ID, "flash")
+    assert text_info.text == "You logged into a secure area!\n×"
+
+
+def test_wrong_login(driver):
+    driver.get("https://the-internet.herokuapp.com/login")
+    but_username = driver.find_element(By.ID, "username")
+    but_username.send_keys("tomsmith")
+    sleep(2)
+
+    but_password = driver.find_element(By.ID, "password")
+    but_password.send_keys("qwerty")
+    sleep(2)
+
+    button_sub = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+    button_sub.click()
+    sleep(2)
+    assert "https://the-internet.herokuapp.com/login" in driver.current_url
