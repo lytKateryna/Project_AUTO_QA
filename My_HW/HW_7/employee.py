@@ -19,7 +19,6 @@ class EmployeeApi:
         assert resp.status_code == 200, f"Ошибка: ожидался статус 200, получен {resp.status_code}"
         return resp.json()
 
-
     def get_token(self, user, password):
         """ Получать токен для авторизации """
         creds = {"username": user, "password": password}
@@ -27,15 +26,14 @@ class EmployeeApi:
         assert resp.status_code == 200, f"Ошибка: ожидался статус 200, получен {resp.status_code}"
         return resp.json()["user_token"]
 
-    def edit_employee(self, company_id, last_name, user, password):
+    def edit_employee(self, employee_id, last_name, user, password):
         client_token = self.get_token(user, password)
-        url_with_token = f'{self.url}/employee/change/{company_id}?token={client_token}'
+        url_with_token = f'{self.url}/employee/change/{employee_id}?client_token={client_token}'
 
-        company_data = {
-            "name": "last_name",
-            "user": "",
+        employee_data = {
+            "Last_name": last_name
         }
 
-        resp = requests.patch(url_with_token, json=company_data)
-        assert resp.status_code == 202, f"Ошибка: ожидался статус 202, получен {resp.status_code}"
+        resp = requests.patch(url_with_token, json=employee_data)
+        assert resp.status_code == 200, f"Ошибка: ожидался статус 200, получен {resp.status_code}"
         return resp.json()
